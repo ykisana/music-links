@@ -1,0 +1,12 @@
+{
+  "name": "music-links",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "repository": "https://github.com/ykisana/music-links.git",
+  "author": "ykisana",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.12.11",
+    "typescript": "^5.4.5"
+  }
+}
