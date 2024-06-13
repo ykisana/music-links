@@ -12,7 +12,7 @@ async function run() {
 
   try {
     const spotifyArtistIds = await getSpotifyIds(mongoClient);
-    const spotifyData = getSpotifyLinksAndData(spotifyArtistIds);
+    const spotifyData = await getSpotifyLinksAndData(spotifyArtistIds);
   } finally {
     mongoClient.close();
   }

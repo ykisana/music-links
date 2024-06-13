@@ -2,32 +2,46 @@ import { StreamingRelease } from "../StreamingRelease";
 
 export async function getSpotifyLinksAndData(spotifyArtistIds: string[]) {
   const accessToken = await getSpotifyAccesToken();
+  const authHeader = getAuthHeader(accessToken);
   const streamingReleases: StreamingRelease[] = [];
-  spotifyArtistIds.forEach(async (artistId) => {
-    const releases = await getReleasesForArtist(artistId, accessToken);
-    releases.forEach((release: any) => {
-      const streamingRelease: StreamingRelease = {};
-      streamingRelease.spotifyId = release.id;
+
+  for (const artistId of spotifyArtistIds) {
+    const releases = await getReleasesForArtist(artistId, authHeader);
+    for (const release of releases) {
+      const upc = await getUPCForRelease(release.id, authHeader);
+
+      const streamingRelease: StreamingRelease = { upc: upc };
       streamingRelease.spotifyAlbumArtLink = release.images[0].url;
       streamingRelease.spotifyStreamingLink = release.external_urls.spotify;
-      streamingReleases.push(release);
-    });
-  });
+
+      streamingReleases.push(streamingRelease);
+    }
+  }
 
   return streamingReleases;
 }
 
-async function getReleasesForArtist(artistId: string, accessToken: string) {
+async function getReleasesForArtist(artistId: string, authHeader: Headers) {
   const url = `https://api.spotify.com/v1/artists/${artistId}/albums`;
-  const headers = new Headers();
-  headers.append("Authorization", "Bearer " + accessToken);
 
   try {
-    const response = await fetch(url, { method: "GET", headers: headers });
+    const response = await fetch(url, { method: "GET", headers: authHeader });
     const data = await response.json();
     return data.items;
   } catch {
     console.log(`Failed to get releases for ${artistId}`);
+  }
+}
+
+async function getUPCForRelease(releaseId: string, authHeader: Headers) {
+  const url = `https://api.spotify.com/v1/albums/${releaseId}`;
+
+  try {
+    const response = await fetch(url, { method: "GET", headers: authHeader });
+    const data = await response.json();
+    return data.external_ids.upc;
+  } catch {
+    console.log(`Failed to get upc for ${releaseId}`);
   }
 }
 
@@ -59,4 +73,10 @@ async function getSpotifyAccesToken() {
 
   const data = await response.json();
   return data.access_token;
+}
+
+function getAuthHeader(accessToken: string) {
+  const headers = new Headers();
+  headers.append("Authorization", "Bearer " + accessToken);
+  return headers;
 }
