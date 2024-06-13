@@ -9,10 +9,12 @@ export async function getSpotifyLinksAndData(spotifyArtistIds: string[]) {
     const releases = await getReleasesForArtist(artistId, authHeader);
     for (const release of releases) {
       const upc = await getUPCForRelease(release.id, authHeader);
-
-      const streamingRelease: StreamingRelease = { upc: upc };
-      streamingRelease.spotifyAlbumArtLink = release.images[0].url;
-      streamingRelease.spotifyStreamingLink = release.external_urls.spotify;
+      const streamingRelease: StreamingRelease = {
+        upc: upc,
+        title: release.name,
+        spotifyAlbumArtLink: release.images[0].url,
+        spotifyStreamingLink: release.external_urls.spotify,
+      };
 
       streamingReleases.push(streamingRelease);
     }

@@ -1,5 +1,6 @@
 export interface StreamingRelease {
   upc: string;
-  spotifyAlbumArtLink?: string;
-  spotifyStreamingLink?: string;
+  title: string;
+  spotifyAlbumArtLink: string;
+  spotifyStreamingLink: string;
 }
