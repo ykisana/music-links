@@ -1,4 +1,5 @@
 import { StreamingRelease } from "../StreamingRelease";
+import { getAuthHeader } from "../util/getAuthHeader";
 
 export async function getSpotifyLinksAndData(spotifyArtistIds: string[]) {
   const accessToken = await getSpotifyAccesToken();
@@ -75,10 +76,4 @@ async function getSpotifyAccesToken() {
 
   const data = await response.json();
   return data.access_token;
-}
-
-function getAuthHeader(accessToken: string) {
-  const headers = new Headers();
-  headers.append("Authorization", "Bearer " + accessToken);
-  return headers;
 }

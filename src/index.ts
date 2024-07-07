@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import { MongoClient } from "mongodb";
 import { getSpotifyIds } from "./getSpotifyIDs";
 import { getSpotifyLinksAndData } from "./streaming-service-link-getters/getSpotifyLinksAndData";
+import { getAppleMusicLinks } from "./streaming-service-link-getters/getAppleMusicLinks";
 
 dotenv.config();
 
@@ -12,7 +13,8 @@ async function run() {
 
   try {
     const spotifyArtistIds = await getSpotifyIds(mongoClient);
-    const spotifyData = await getSpotifyLinksAndData(spotifyArtistIds);
+    var streamingReleases = await getSpotifyLinksAndData(spotifyArtistIds);
+    await getAppleMusicLinks(streamingReleases);
   } finally {
     mongoClient.close();
   }

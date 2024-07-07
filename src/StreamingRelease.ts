@@ -3,4 +3,5 @@ export interface StreamingRelease {
   title: string;
   spotifyAlbumArtLink: string;
   spotifyStreamingLink: string;
+  appleMusicStreamingLink?: string;
 }
