@@ -1,6 +1,6 @@
 import { MongoClient } from "mongodb";
 
-export async function getSpotifyIds(mongoClient: MongoClient) {
+export async function getSpotifyArtistIds(mongoClient: MongoClient) {
   try {
     const database = mongoClient.db("musicLinks");
     const collection = database.collection("spotifyids");
