@@ -7,8 +7,10 @@ interface Artist {
 
 export async function getSpotifyArtistIds(mongoClient: MongoClient) {
   try {
-    const database = mongoClient.db("musicLinks");
-    const collection = database.collection<Artist>("spotifyids");
+    const database = mongoClient.db(process.env.MONGO_DATABASE_NAME);
+    const collection = database.collection<Artist>(
+      process.env.MONGO_ARTIST_ID_COLLECTION_NAME!
+    );
 
     const documents = await collection.find().toArray();
 
