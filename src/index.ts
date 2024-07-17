@@ -1,16 +1,13 @@
 import dotenv from "dotenv";
-import { MongoClient } from "mongodb";
 import { addAppleMusicLinks } from "@services/addAppleMusicLinks";
 import { getStreamingReleasesFromSpotify } from "@services/getStreamingReleasesFromSpotify";
-import { getSpotifyArtistIds } from "@database/getSpotifyArtistIds";
+import { getSpotifyArtistIds } from "@mongoDb/getSpotifyArtistIds";
+import { createMongoClient } from "@mongoDb/createMongoClient";
 
 dotenv.config();
 
 async function run() {
-  const mongoClient = new MongoClient(
-    process.env.MONGO_CONNECTION_STRING as string
-  );
-
+  const mongoClient = createMongoClient();
   try {
     const spotifyArtistIds = await getSpotifyArtistIds(mongoClient);
     var streamingReleases = await getStreamingReleasesFromSpotify(
