@@ -1,3 +1,12 @@
+export interface SpotifyRelease {
+  id: string;
+  release_date: string;
+  artists: [{ name: string }];
+  name: string;
+  images: [{ url: string }];
+  external_urls: { spotify: string };
+}
+
 export async function fetchSpotifyAccessToken() {
   const url = "https://accounts.spotify.com/api/token";
   const params = new URLSearchParams();
@@ -43,14 +52,15 @@ export async function fetchReleaseUPC(releaseId: string, authHeader: Headers) {
 export async function fetchArtistReleases(
   artistId: string,
   authHeader: Headers
-) {
+): Promise<SpotifyRelease[]> {
   const url = `https://api.spotify.com/v1/artists/${artistId}/albums`;
 
   try {
     const response = await fetch(url, { method: "GET", headers: authHeader });
     const data = await response.json();
-    return data.items;
+    return data.items as SpotifyRelease[];
   } catch {
     console.log(`Failed to get releases for ${artistId}`);
+    return [];
   }
 }
