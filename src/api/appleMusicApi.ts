@@ -28,5 +28,5 @@ export async function fetchAppleMusicStreamingLink(
 
   const response = await fetch(url, { method: "GET", headers: authHeader });
   const data = await response.json();
-  return `https//music.apple.com/us/album/${data.data[0].id}` as string;
+  return `https://music.apple.com/us/album/${data.data[0].id}` as string;
 }

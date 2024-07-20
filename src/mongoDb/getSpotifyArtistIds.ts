@@ -1,13 +1,12 @@
-import { MongoClient } from "mongodb";
+import { Db } from "mongodb";
 
 interface Artist {
   _id: string;
   spotifyArtistId: string;
 }
 
-export async function getSpotifyArtistIds(mongoClient: MongoClient) {
+export async function getSpotifyArtistIds(database: Db) {
   try {
-    const database = mongoClient.db(process.env.MONGO_DATABASE_NAME);
     const collection = database.collection<Artist>(
       process.env.MONGO_ARTIST_ID_COLLECTION_NAME!
     );
